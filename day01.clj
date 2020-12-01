@@ -7,11 +7,19 @@
   (when (= sum 2020)
     result))
 
-(def part1
-  (some calc (for [i expenses j expenses] [(+ i j) (* i j)])))
+(def pairs1
+  (for [i     expenses
+        j     expenses
+        :let  [sum (+ i j)]
+        :when (<= sum 2020)]
+    [sum (* i j)]))
 
-(def part2
-  (some calc (for [i expenses j expenses k expenses] [(+ i j k) (* i j k)])))
+(def pairs2
+  (for [[s p] pairs1
+        k     expenses
+        :let  [sum (+ s k)]
+        :when (= sum 2020)]
+    [sum (* p k)]))
 
-(println "Result part 1:" part1)
-(println "Result part 2:" part2)
+(println "Result part 1:" (some calc pairs1))
+(println "Result part 2:" (some calc pairs2))
