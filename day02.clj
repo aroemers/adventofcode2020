@@ -16,4 +16,4 @@
         (= (get password (dec n2)) char)))
 
 (println "Result part 1:" (count (filter valid-1? passwords)))
-(println "Result part 1:" (count (filter valid-2? passwords)))
+(println "Result part 2:" (count (filter valid-2? passwords)))
