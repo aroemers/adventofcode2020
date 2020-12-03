@@ -3,8 +3,6 @@
 
 (def line-width (count (first map-lines)))
 
-(def total-lines (count map-lines))
-
 (defn slope [right down]
   (loop [lines (drop down map-lines)
          pos   0
