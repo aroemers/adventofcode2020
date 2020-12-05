@@ -10,29 +10,18 @@
                  [0 max])
          first)))
 
-(defn seat-id [row column]
-  (+ (* row 8) column))
+(defn seat-id [pass]
+  (+ (* (binary (take 7 pass)) 8) (binary (drop 7 pass))))
 
-(def passes (->> (slurp "input/day05.txt")
-                 (clojure.string/split-lines)))
+(def passes (->> (slurp "input/day05.txt") (clojure.string/split-lines)))
 
-(def seat-ids
-  (->>  passes
-        (map (fn [pass]
-               (seat-id (binary (take 7 pass))
-                        (binary (drop 7 pass)))))
-        (set)))
+(def seat-ids (->> passes (map seat-id) sort vec))
 
-(def min-seat-id (apply min seat-ids))
+(def missing-seat-id (some (fn [index]
+                             (let [seat-id (seat-ids index)]
+                               (when (= (+ seat-id 2) (seat-ids (inc index)))
+                                 (inc seat-id))))
+                           (range (count seat-ids))))
 
-(def max-seat-id (apply max seat-ids))
-
-(def missing-seat-id (some (fn [id]
-                             (and (seat-ids (dec id))
-                                  (not (seat-ids id))
-                                  (seat-ids (inc id))
-                                  id))
-                           (range min-seat-id max-seat-id)))
-
-(println "Result part 1:" max-seat-id)
+(println "Result part 1:" (last seat-ids))
 (println "Result part 2:" missing-seat-id)
